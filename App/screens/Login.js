@@ -83,7 +83,7 @@ export default function Login() {
             onPress={() => {
               login();
               getUserId();
-              () => navigation.navigate("Main");
+              navigation.navigate("Main");
             }}
           >
             <Text style={styles.textbutton}>Login</Text>
