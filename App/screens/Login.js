@@ -8,14 +8,12 @@ import {
   AsyncStorage,
 } from "react-native";
 import { StatusBar } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import firebase from "firebase";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const navigation = useNavigation();
   async function getUserId() {
     try {
       const value = await AsyncStorage.getItem("@MySuperStore:key");
@@ -85,7 +83,7 @@ export default function Login() {
             onPress={() => {
               login();
               getUserId();
-              navigation.navigate("Main");
+              () => navigation.navigate("Main");
             }}
           >
             <Text style={styles.textbutton}>Login</Text>
