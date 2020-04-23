@@ -9,6 +9,7 @@ export default function App({ naviagation }) {
   const [isLogged, setIsLogged] = useState(false);
 
   useEffect(() => {
+    //initial
     getUserId();
   });
 
