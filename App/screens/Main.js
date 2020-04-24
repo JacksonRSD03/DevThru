@@ -34,7 +34,7 @@ export default function Main() {
     //listContent();
   });
 
-  async function listContent(directory) {
+  async function listContent(currentDirectory) {
     try {
       setIsLoading(true);
 
@@ -42,7 +42,7 @@ export default function Main() {
         imageList,
         directoryList,
         currentDirectory,
-      } = await FirebaseStorage.listAll(directory);
+      } = await FirebaseStorage.listAll(currentDirectory);
 
       setImageList(imageList);
       setDirectoryList(directoryList);

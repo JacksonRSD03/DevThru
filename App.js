@@ -4,7 +4,7 @@ import Main from "./App/screens/Routes";
 import Login from "./App/screens/Login";
 import firebase from "firebase";
 
-export default function App({ naviagation }) {
+export default function App({ navigation }) {
   const [user, setUser] = useState(null);
   const [isLogged, setIsLogged] = useState(false);
 
