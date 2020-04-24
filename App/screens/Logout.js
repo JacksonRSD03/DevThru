@@ -12,6 +12,7 @@ export default function Logout({ navigation }) {
       await AsyncStorage.clear();
       const auth = firebase.auth();
       await auth.signOut();
+      navigation.navigate("Main");
     } catch (error) {
       console.log("deu bosta na hora do logout, o erro foi: " + error);
     }
@@ -19,16 +20,8 @@ export default function Logout({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => {
-          handleLogout();
-          () => {
-            navigation.navigate("RootStack");
-          };
-        }}
-      >
-        <Text>...</Text>
+      <TouchableOpacity style={styles.button} onPress={handleLogout}>
+        <Text>Sair</Text>
       </TouchableOpacity>
     </View>
   );

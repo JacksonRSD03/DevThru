@@ -9,9 +9,9 @@ import {
 } from "react-native";
 import { StatusBar } from "react-native";
 import firebase from "firebase";
-import { useNavigation } from "@react-navigation/native";
+//import { useNavigation } from "@react-navigation/native";
 
-export default function Login() {
+export default function Login({navigation}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState("");
@@ -54,11 +54,12 @@ export default function Login() {
     try {
       await auth.signInWithEmailAndPassword(email, password);
       setUserId();
+      navigation.navigate('Main');
     } catch (error) {
       setErrorMessage("Email e/ou Senha inválida!");
     }
   }
-  const navigation = useNavigation();
+ 
   console.log(user);
   return (
     <View style={styles.view}>
@@ -83,11 +84,7 @@ export default function Login() {
         <View style={styles.positionButton}>
           <TouchableOpacity
             style={styles.buttonLogin}
-            onPress={() => {
-              onlogin();
-              getUserId();
-             { ()=>navigation.navigate("RootStack")};
-            }}
+            onPress={onlogin}
           >
             <Text style={styles.textbutton}>Login</Text>
           </TouchableOpacity>
