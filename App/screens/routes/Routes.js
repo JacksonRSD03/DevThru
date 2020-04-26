@@ -7,11 +7,11 @@ import { NavigationContainer } from "@react-navigation/native";
 import { AuthContext } from "../../context/auth";
 
 const Routes = () => {
-  const auth = React.useContext(AuthContext);
+  const auth =useContext(AuthContext);
   return (
     <NavigationContainer>
       <StatusBar barStyle="light-content" backgroundColor={"#21CCC5"} />
-      {!signed ? <App /> : <Auth />}
+      {auth.user ? <App /> : <Auth />}
     </NavigationContainer>
   );
 };

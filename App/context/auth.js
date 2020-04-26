@@ -2,7 +2,7 @@ import React, { createContext, useState, useEffect } from "react";
 import { AsyncStorage } from "react-native";
 import firebase from "firebase";
 
-export const AuthContext = createContext();
+export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
 
   function signIn() {
     const response = `${firebase.auth().currentUser.uid}`;
-
+    console.log(response);
     setUser(response);
 
     AsyncStorage.setItem("@RNAuth:user", response);
@@ -33,7 +33,6 @@ export const AuthProvider = ({ children }) => {
       setUser(null);
     });
   }
-  console.log(signed);
   return (
     <AuthContext.Provider
       value={{

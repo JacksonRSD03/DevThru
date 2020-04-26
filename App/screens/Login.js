@@ -15,13 +15,13 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [user, setUser] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  //const { signed } = useContext(AuthContext);
+  const Login = React.useContext(AuthContext);
  
   async function onlogin() {
     const auth = firebase.auth();
     try {
       await auth.signInWithEmailAndPassword(email, password);
-      signIn();
+      Login.signIn();
     } catch (error) {
       setErrorMessage("Email e/ou Senha inválida!");
     }
