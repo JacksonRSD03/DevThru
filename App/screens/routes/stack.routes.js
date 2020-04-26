@@ -1,20 +1,17 @@
 import React from "react";
 import { AsyncStorage } from "react-native";
-import Login from "../Login";
-import Main from "../Main";
+import Main from "./auth.routes";
 import Drawer from "./drawer.routes";
 
 import { createStackNavigator } from "@react-navigation/stack";
 
 const Stack = createStackNavigator();
-const uid = AsyncStorage.getItem("@MySuperStore:key");
-export default function MyStack() {
-  console.log(uid);
+function App() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Drawer" component={Drawer} />
-
-      <Stack.Screen name="Main" component={uid ? Main : Login} />
+      <Stack.Screen name="Main" component={Main} />
     </Stack.Navigator>
   );
 }
+export default App;

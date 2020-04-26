@@ -10,7 +10,7 @@ import {
   View,
   Text,
   AsyncStorage,
-  Alert,
+  Button,
 } from "react-native";
 import { FirebaseStorage } from "../services/FirebaseStorage";
 import DirectoryList from "../components/DirectoryList";
@@ -21,7 +21,7 @@ import * as ImagePicker from "expo-image-picker";
 import { LinearGradient } from "expo-linear-gradient";
 import firebase from "firebase";
 
-export default function Main() {
+export default function Main({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
   const [imageList, setImageList] = useState([]);
   const [currentDirectory, setCurrentDirectory] = useState([]);
@@ -29,11 +29,30 @@ export default function Main() {
   const [isDialogOpen, setIsDialogOPen] = useState(false);
   const [currentImage, setCurrentImage] = useState([]);
 
-  useEffect(() => {
-    getUserId();
-    //listContent();
-  });
-
+  
+  async function setUserId() {
+    try {
+      await AsyncStorage.setItem(
+        "@MySuperStore:key",
+        `${firebase.auth().currentUser.uid}`
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async function redirect() {
+    const user = AsyncStorage.getItem("@MySuperStore:key");
+    if (user == null) {
+      navigation.navigate("Main", {
+        screen: "Login",
+      });
+    }
+  }
+  function redLogin() {
+    navigation.navigate("Main", {
+      screen: "Login",
+    });
+  }
   async function listContent(currentDirectory) {
     try {
       setIsLoading(true);
@@ -57,7 +76,6 @@ export default function Main() {
 
   async function getUserId() {
     try {
-      // console.log(firebase.auth().currentUser);
       const value = await AsyncStorage.getItem("@MySuperStore:key");
       if (value !== null) {
         // We have data!!
@@ -65,6 +83,7 @@ export default function Main() {
       } else if (value == null) {
         console.log("valor retornou nulo");
       }
+      return value;
     } catch (error) {
       console.log("Deu bosta na hora de salvar, aconteceu isso: " + error);
     }
@@ -73,7 +92,6 @@ export default function Main() {
 
   function onRefreshing() {
     listContent(currentDirectory);
-    // console.log(this.state.currentDirectory);
   }
   function onSelectImage(image) {
     setIsDialogOPen(true);
@@ -116,15 +134,17 @@ export default function Main() {
       style={styles.gradient}
     >
       <SafeAreaView style={styles.container}>
-        <Breadcrump directory={currentDirectory} />
+       
         <ScrollView
           style={styles.scrollview}
           refreshControl={
-            <RefreshControl refreshing={isLoading} onRefresh={()=>onRefreshing()} />
+            <RefreshControl
+              refreshing={isLoading}
+              onRefresh={() => onRefreshing()}
+            />
           }
         >
-              
-          <ImageList images={imageList} onSelect={()=>onSelectImage()} />
+          <ImageList images={imageList} onSelect={() => onSelectImage()} />
         </ScrollView>
 
         <TouchableOpacity style={styles.fab} onPress={() => onAddPhoto()}>
@@ -136,19 +156,13 @@ export default function Main() {
         <ImageDialog
           image={currentImage}
           isOpen={isDialogOpen}
-          onClose={()=>onCloseDialog()}
-          onRemove={()=>removeImage()}
+          onClose={() => onCloseDialog()}
+          onRemove={() => removeImage()}
         />
-        <TouchableOpacity
-          onPress={() => {
-            builUserDatabase();
-          }}
-        >
-          <Text>Home</Text>
-        </TouchableOpacity>
+        <Button title={"h"}onPress={redLogin} />
       </SafeAreaView>
     </LinearGradient>
-        );
+  );
 }
 
 const styles = StyleSheet.create({

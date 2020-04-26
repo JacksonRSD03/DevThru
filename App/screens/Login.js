@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   View,
   Text,
@@ -9,58 +9,24 @@ import {
 } from "react-native";
 import { StatusBar } from "react-native";
 import firebase from "firebase";
-//import { useNavigation } from "@react-navigation/native";
-
-export default function Login({navigation}) {
+import { AuthContext } from "../context/auth";
+export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  async function getUserId() {
-    try {
-      const value = await AsyncStorage.getItem("@MySuperStore:key");
-      if (value !== null) {
-      } else if (value == null) {
-        console.log("valor retornou nulo");
-      }
-    } catch (error) {
-      console.log("Deu bosta na hora de salvar, aconteceu isso: " + error);
-    }
-    setUser(value);
-  }
-  //async componentDidMount() {
-  /*const auth = firebase.auth();
-    this.onAuthStateUnsubscribe = auth.onAuthStateChanged((user) => {
-      if (user) {
-        this.props.onLogin(user);
-      }
-    });*/
-  //}
-  async function setUserId() {
-    try {
-      await AsyncStorage.setItem(
-        "@MySuperStore:key",
-        `${firebase.auth().currentUser.uid}`
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  }
-  //componentWillUnmount() {
-  //this.onAuthStateUnsubscribe();
-  // }
+  //const { signed } = useContext(AuthContext);
+ 
   async function onlogin() {
     const auth = firebase.auth();
     try {
       await auth.signInWithEmailAndPassword(email, password);
-      setUserId();
-      navigation.navigate('Main');
+      signIn();
     } catch (error) {
       setErrorMessage("Email e/ou Senha inválida!");
     }
   }
- 
-  console.log(user);
+
   return (
     <View style={styles.view}>
       <StatusBar barStyle="light-content" backgroundColor={"#21CCC5"} />
@@ -82,10 +48,7 @@ export default function Login({navigation}) {
           />
         </View>
         <View style={styles.positionButton}>
-          <TouchableOpacity
-            style={styles.buttonLogin}
-            onPress={onlogin}
-          >
+          <TouchableOpacity style={styles.buttonLogin} onPress={onlogin}>
             <Text style={styles.textbutton}>Login</Text>
           </TouchableOpacity>
         </View>
